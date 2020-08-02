@@ -1,6 +1,6 @@
 class User:
     def say_hello(some_user):
-        print(f"안녕하세요! 저는 {some_user.name}")
+        print(f"안녕하세요! 저는 {some_user.name}입니다.")
 
 
 user1 = User()
@@ -18,3 +18,6 @@ user2.password = "34567"
 user3.name = "엄준식"
 user3.email = "isalive@codeit.kr"
 user3.password = "67875"
+
+User.say_hello(user1)
+user1.say_hello()
