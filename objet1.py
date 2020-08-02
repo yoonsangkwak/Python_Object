@@ -1,6 +1,6 @@
 class User:
-    def say_hello(some_user):
-        print(f"안녕하세요! 저는 {some_user.name}입니다.")
+    def say_hello(self):
+        print(f"안녕하세요! 저는 {self.name}입니다.")
 
 
 user1 = User()
