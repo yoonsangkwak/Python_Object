@@ -124,3 +124,4 @@ print("5초가 흘렀습니다")
 for i in range(5):
     clock.tick()
 print(clock)
+print("check")
