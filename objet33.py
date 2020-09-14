@@ -31,10 +31,7 @@ class Cashier(Employee):
         return Cashier.company_name + " 계산대 직원: " + self.name
 
 
-class DeliveryMan(Employee):
-    pass
-
+print(Cashier.mro())
 
 young = Cashier("강영훈", 8900, 4)
-print(young)
-print(young.raise_percentage)
+young.raise_pay()
