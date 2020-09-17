@@ -1,12 +1,17 @@
-from math import pi
+from math import pi, sqrt
+from abc import ABC, abstractmethod
+# abstract basic class
 
-class Shape:
+
+class Shape(ABC):
     """도형 클래스"""
-    def area(self):
+    @abstractmethod
+    def area(self) -> float:
         """도형의 넓이를 리턴한다: 자식 클래스가 오버라이딩할 것"""
         pass
-
-    def perimeter(self):
+    
+    @abstractmethod
+    def perimeter(self) -> float:
         """도형의 둘레를 리턴한다: 자식 클래스가 오버라이딩할 것"""
         pass
 
@@ -59,6 +64,19 @@ class Cylinder:
         return f"밑면 반지름 {self.radius}, 높이 {self.height}인 원기둥"
 
 
+class EquilateraTriangle(Shape):
+    """정삼각형 클래스"""
+    def __init__(self, side):
+        self.side = side
+
+    def area(self):
+        """정삼각형의 넓이를 리턴한다"""
+        return sqrt(3) * self.side * self.side / 4
+
+    def perimeter(self):
+        """정삼각형의 둘레를 리턴한다"""
+        return 3 * self.side
+
 class Paint:
     """그림판 프로그램 클래스"""
     def __init__(self):
@@ -87,14 +105,10 @@ class Paint:
         return res_str
 
 
-cylinder = Cylinder(7, 4)
-rectangle = Rectangle(3, 7)
-circle = Circle(4)
+triangle = EquilateraTriangle(4)
 
 paint_program = Paint()
-paint_program.add_shape(cylinder)
-paint_program.add_shape(rectangle)
-paint_program.add_shape(circle)
+paint_program.add_shape(triangle)
 
 print(paint_program.total_area_of_shapes())
 print(paint_program.total_perimeter_of_shapes())
