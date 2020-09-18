@@ -1,51 +1,21 @@
-class Student:
-    # 코드를 쓰세요
+class StudentProfile:
+    """학생 기본 정보 클래스"""
     def __init__(self, name, id, major):
-        self.name = Name(name)
-        self.id = Id(id)
-        self.major = Major(major)
-        self.grade = Grade()
-
-    def print_report(self):
-        print("코드잇 대학 성적표\n")
-
-
-class Name:
-    def __init__(self, name):
         self.name = name
-
-    def change_student_name(self, new_name):
-        self.name = new_name
-
-    def print_report(self):
-        print(f"학생 이름:{self.name}")
-
-
-class Id:
-    def __init__(self, id):
         self.id = id
-        
-    def change_student_id(self, new_id):
-        self.id = new_id
-
-    def print_report(self):
-        print(f"학생 번호:{self.id}")
-
-
-class Major:
-    def __init__(self, major):
         self.major = major
 
-    def change_student_major(self, new_major):
+    def change_info(self, new_name, new_id, new_major):
+        """학생 기본 정보 수정 메소드"""
+        self.name = new_name
+        self.id = new_id
         self.major = new_major
-
-    def print_report(self):
-        print(f"소속 학과:{self.major}")
-
-
-class Grade:
-    def __init__(self):
-        self.grades = []
+        
+        
+class GPAManager:
+    """학생 학점 관리 클래스"""
+    def __init__(self, grades):
+        self.grades = grades
 
     def add_grade(self, grade):
         """학점 추가 메소드"""
@@ -55,28 +25,41 @@ class Grade:
             print("수업 학점은 0과 4.3 사이여야 합니다!")
 
     def get_average_gpa(self):
-        """평균 학점 계산 메소드"""
-        return sum(self.grades) / len(self.grades)
+        """평균 학점 계산"""
+        return sum(self.grades) / len(self.grades)  
+    
+    
+class ReportCardPrinter:
+    """성적표 출력 클래스"""
+    def __init__(self, student_profile, gpa_manager):
+        self.student_profile = student_profile
+        self.gpa_manager = gpa_manager
 
-    def print_report(self):
-        print(f"평균 학점:{sum(self.grades) / len(self.grades)}")
+    def print(self):
+        """학생 성적표 출력 메소드"""
+        print("코드잇 대학 성적표\n\n학생 이름:{}\n학생 번호:{}\n소속 학과:{}\n평균 학점:{}"\
+        .format(self.student_profile.name, self.student_profile.id,\
+                self.student_profile.major, self.gpa_manager.get_average_gpa()))   
+    
+
+class Student:
+    """코드잇 대학생을 나타내는 클래스"""
+    def __init__(self, name, id, class_year):
+        self.profile = StudentProfile(name, id, class_year)
+        self.grades = []
+        self.gpa_manager = GPAManager(self.grades)
+        self.report_card_printer = ReportCardPrinter(self.profile, self.gpa_manager)
 
 
-# 작성한 클래스에 맞춰서 실행 코드도 바꿔보세요
 # 학생 인스턴스 정의
 younghoon = Student("강영훈", 20120034, "통계학과")
-younghoon.id.change_student_id(20130024)
-younghoon.major.change_student_major("컴퓨터 공학과")
+younghoon.profile.change_info("강영훈", 20130024, "컴퓨터 공학과")
 
 # 학생 성적 추가
-younghoon.grade.add_grade(3.0)
-younghoon.grade.add_grade(3.33)
-younghoon.grade.add_grade(3.67)
-younghoon.grade.add_grade(4.3)
+younghoon.gpa_manager.add_grade(3.0)
+younghoon.gpa_manager.add_grade(3.33)
+younghoon.gpa_manager.add_grade(3.67)
+younghoon.gpa_manager.add_grade(4.3)
 
 # 학생 성적표 
-younghoon.print_report()
-younghoon.name.print_report()
-younghoon.id.print_report()
-younghoon.major.print_report()
-younghoon.grade.print_report()
+younghoon.report_card_printer.print()
