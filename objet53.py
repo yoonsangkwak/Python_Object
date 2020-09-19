@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class IMessage(ABC):
+class IText(ABC):
     @property
     @abstractmethod
     def content(self):
@@ -13,13 +13,15 @@ class IMessage(ABC):
         """작성한 메시지를 수정하는 메소드"""
         pass
 
+
+class ISendable(ABC):
     @abstractmethod
     def send(self, destination: str) -> bool:
         """작성한 메시지를 전송하는 메소드"""
         pass
 
 
-class Email(IMessage):
+class Email(IText, ISendable):
     def __init__(self, content, owner_email):
         """이메일은 그 내용과 보낸 사람의 이메일 주소를 인스턴스 변수로 가짐"""
         self._content = content
@@ -40,7 +42,7 @@ class Email(IMessage):
         return True
 
 
-class TextMessage(IMessage):
+class TextMessage(IText, ISendable):
     def __init__(self, content):
         """문자 메시지는 그 내용을 인스턴스 변수로 가짐"""
         self._content = content
@@ -59,23 +61,7 @@ class TextMessage(IMessage):
         print("{}로 문자 메시지 전송!\n내용: {}").format(destination, self._content)
 
 
-class TextReader:
-    """인스턴스의 텍스트 내용을 읽어주는 클래스"""
-
-    def __init__(self):
-        self.texts = []
-
-    def add_text(self, text: IMessage):
-        """인스턴스 추가 메소드, 파라미터는 IMessage 인터페이스를 상속받을 것"""
-        self.texts.append(text)
-
-    def read_all_texts(self):
-        """인스턴스 안에 있는 모든 텍스트 내용 출력"""
-        for text in self.texts:
-            print(text.content)
-
-
-class Memo(IMessage):
+class Memo(IText):
     def __init__(self, content):
         """메모는 그 내용을 인스턴스 변수로 가짐"""
         self._content = content
@@ -88,11 +74,22 @@ class Memo(IMessage):
     def edit_content(self, new_content):
         """메모 내용 수정 메소드"""
         self._content = new_content
-    
-    def send(self, destination):
-        """메모는 전송할 수 없음"""
-        print("메모는 아무 데도 보낼 수 없습니다!")
-        return False
+
+
+class TextReader:
+    """인스턴스의 텍스트 내용을 읽어주는 클래스"""
+
+    def __init__(self):
+        self.texts = []
+
+    def add_text(self, text: IText):
+        """인스턴스 추가 메소드, 파라미터는 IText 인터페이스를 상속받을 것"""
+        self.texts.append(text)
+
+    def read_all_texts(self):
+        """인스턴스 안에 있는 모든 텍스트 내용 출력"""
+        for text in self.texts:
+            print(text.content)
 
 
 email = Email("안녕 잘 지내니? 오랜만이다!", "young@codeit.kr")
